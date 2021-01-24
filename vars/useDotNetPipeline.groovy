@@ -5,11 +5,6 @@ def call(Map config) {
             stage('Precheck') {
                 steps {
                     sh 'docker -v'
-                    script {
-                        docker.image("mcr.microsoft.com/dotnet/sdk:${config.dotnetVersion}").inside {
-                            sh 'ls'
-                        }
-                    }
                 }
             }
             
@@ -28,7 +23,7 @@ def call(Map config) {
                     script {
                         docker.image("mcr.microsoft.com/dotnet/sdk:${config.dotnetVersion}").inside {
                             sh "dotnet build ${config.projectName}/${config.projectName}.csproj --configuration Release -o output -r linux-x64"
-                            writeFile encoding: 'UTF8', file: 'Dockerfile', text: """FROM mcr.microsoft.com/dotnet/runtime:5.0
+                            writeFile encoding: 'UTF8', file: 'Dockerfile', text: """FROM mcr.microsoft.com/dotnet/runtime:${config.dotnetVersion}
 COPY output /app
 WORKDIR /app
 ENTRYPOINT ["dotnet", "run", "${config.projectName}.dll"]"""
