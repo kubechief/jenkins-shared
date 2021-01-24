@@ -1,6 +1,6 @@
 def call(Map config) {
     pipeline {
-        agent none
+        agent any
         stages {
             stage('Precheck') {
                 steps {
