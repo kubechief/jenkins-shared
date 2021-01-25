@@ -26,10 +26,9 @@ def call(Map config) {
                             writeFile encoding: 'UTF8', file: 'Dockerfile', text: """FROM mcr.microsoft.com/dotnet/runtime:${config.dotnetVersion}
 COPY output /app
 WORKDIR /app
-ENTRYPOINT ["dotnet", "run", "${config.projectName}.dll"]"""
+ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
                         }
                     }
-                    
                 }
             }
             
