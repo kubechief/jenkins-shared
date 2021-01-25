@@ -35,7 +35,9 @@ ENTRYPOINT ["dotnet", "run", "${config.projectName}.dll"]"""
             
             stage('Build & Push Docker Image') {
                 steps {
-                    sh "docker build . -t aksharpatel47/${config.dockerImageName ? config.dockerImageName : config.projectName}:latest"
+                    docker.withRegistry('', 'docker-hub-cred') {
+                        docker.build("aksharpatel47/${config.dockerImageName ? config.dockerImageName : config.projectName}:latest").push('latest')
+                    }
                 }
             }
         }
