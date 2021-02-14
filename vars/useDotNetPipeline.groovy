@@ -39,7 +39,7 @@ ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
                 steps {
                     script {
                         docker.withRegistry('', 'docker-hub-cred') {
-                           docker.build("aksharpatel47/${config.dockerImageName ? config.dockerImageName : config.projectName}:latest").push('latest')
+                           docker.build("aksharpatel47/${config.dockerImageName ? config.dockerImageName : config.projectName}:${env.BUILD_NUMBER}").push('latest')
                         }
                     }
                 }
