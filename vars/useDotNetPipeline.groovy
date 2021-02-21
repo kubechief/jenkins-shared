@@ -36,6 +36,9 @@ ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
             }
             
             stage('Build & Push Docker Image') {
+                when {
+                    branch 'master'
+                }
                 steps {
                     script {
                         docker.withRegistry('', 'docker-hub-cred') {
