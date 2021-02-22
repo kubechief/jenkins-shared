@@ -12,6 +12,16 @@ def call(Map config) {
                     }
                 }
             }
+
+            stage('NPM Install') {
+                steps {
+                    script {
+                        docker.image("node:lts-alpine").inside {
+                            sh 'npm install'
+                        }
+                    }
+                }
+            }
             
             stage('Test') {
                 steps {
