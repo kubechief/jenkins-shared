@@ -23,15 +23,15 @@ def call(Map config) {
                 }
             }
             
-            stage('Test') {
-                steps {
-                    script {
-                        docker.image("node:lts-alpine").inside {
-                            sh 'npm run test'
-                        }    
-                    }
-                }
-            }
+            // stage('Test') {
+            //     steps {
+            //         script {
+            //             docker.image("node:lts-alpine").inside {
+            //                 sh 'npm run test'
+            //             }    
+            //         }
+            //     }
+            // }
             
             stage('Release Build') {
                 steps {
