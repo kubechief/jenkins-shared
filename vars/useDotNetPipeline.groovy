@@ -8,6 +8,11 @@ def call(Map config) {
             stage('Precheck') {
                 steps {
                     sh 'docker -v'
+                    script {
+                        docker.image("mcr.microsoft.com/dotnet/sdk:${config.dotnetVersion}").inside {
+                            sh 'dotnet --info'
+                        }
+                    }
                 }
             }
             
@@ -16,7 +21,7 @@ def call(Map config) {
                     script {
                         docker.image("mcr.microsoft.com/dotnet/sdk:${config.dotnetVersion}").inside {
                             sh 'dotnet test'
-                        }    
+                        }
                     }
                 }
             }
@@ -42,7 +47,9 @@ ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
                 steps {
                     script {
                         docker.withRegistry('', 'docker-hub-cred') {
-                            def build = docker.build("aksharpatel47/${config.dockerImageName ? config.dockerImageName : config.projectName}:${env.BUILD_NUMBER}")
+                            def imageName = "aksharpatel47/${config.dockerImageName ? config.dockerImageName : currentBuild.projectName}:${env.BUILD_NUMBER}"
+                            echo "Building image ${imageName}..."
+                            def build = docker.build(imageName)
                             build.push("${env.BUILD_NUMBER}")
                             build.push("latest")
                         }
