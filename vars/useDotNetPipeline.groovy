@@ -43,10 +43,10 @@ ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
             stage('Build & Push Docker Image') {
                 when {
                     anyOf {
-                        branch 'master';
                         branch 'develop';
                         branch pattern: 'release.+', comparator: "REGEXP";
                         branch pattern: 'hotfix.+', comparator: "REGEXP"
+                        tag pattern: '*', comparator: "REGEXP"
                     }
                     
                 }
