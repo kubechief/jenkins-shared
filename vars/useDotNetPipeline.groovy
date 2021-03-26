@@ -55,7 +55,7 @@ ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
                         docker.withRegistry('', 'docker-hub-cred') {
                             echo "${env.BRANCH_NAME}, ${env.BUILD_NUMBER}, ${env.TAG_NAME}"
                             def imageTag = getImageTag(env.BRANCH_NAME, env.BUILD_NUMBER, env.TAG_NAME)
-                            def imageName = "aksharpatel47/${config.dockerImageName ? config.dockerImageName : currentBuild.projectName}:${env.TAG_NAME}"
+                            def imageName = "aksharpatel47/${config.dockerImageName ? config.dockerImageName : currentBuild.projectName}:${imageTag}"
                             echo "Building image ${imageName}..."
                             def build = docker.build(imageName)
                             build.push("${imageTag}")
