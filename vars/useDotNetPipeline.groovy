@@ -53,10 +53,9 @@ ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
                 steps {
                     script {
                         docker.withRegistry('', 'docker-hub-cred') {
-                            def version = sh(returnStdout: true, script: "git tag --contains").trim()
-                            echo "${version}, ${env.BRANCH_NAME}, ${env.BUILD_NUMBER}, ${env.TAG_NAME}"
-                            def imageTag = getImageTag(env.BRANCH_NAME, env.BUILD_NUMBER, version)
-                            def imageName = "aksharpatel47/${config.dockerImageName ? config.dockerImageName : currentBuild.projectName}:${imageTag}"
+                            echo "${env.BRANCH_NAME}, ${env.BUILD_NUMBER}, ${env.TAG_NAME}"
+                            def imageTag = getImageTag(env.BRANCH_NAME, env.BUILD_NUMBER, env.TAG_NAME)
+                            def imageName = "aksharpatel47/${config.dockerImageName ? config.dockerImageName : currentBuild.projectName}:${env.TAG_NAME}"
                             echo "Building image ${imageName}..."
                             def build = docker.build(imageName)
                             build.push("${imageTag}")
