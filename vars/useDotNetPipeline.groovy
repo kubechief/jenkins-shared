@@ -45,7 +45,7 @@ ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
                     anyOf {
                         branch 'develop';
                         branch pattern: 'release.+', comparator: "REGEXP";
-                        branch pattern: 'hotfix.+', comparator: "REGEXP"
+                        branch pattern: 'hotfix.+', comparator: "REGEXP";
                         allOf {
                             branch 'master';
                             tag pattern: '*', comparator: "REGEXP"
