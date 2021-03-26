@@ -46,15 +46,14 @@ ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
                         branch 'develop';
                         branch pattern: 'release.+', comparator: "REGEXP";
                         branch pattern: 'hotfix.+', comparator: "REGEXP";
-                        tag pattern: '.*', comparator: "REGEXP"
                     }
                     
                 }
                 steps {
                     script {
                         docker.withRegistry('', 'docker-hub-cred') {
-                            echo "${env.BRANCH_NAME}, ${env.BUILD_NUMBER}, ${env.TAG_NAME}"
-                            def imageTag = getImageTag(env.BRANCH_NAME, env.BUILD_NUMBER, env.TAG_NAME)
+                            echo "${env.BRANCH_NAME}, ${env.BUILD_NUMBER}"
+                            def imageTag = getImageTag(env.BRANCH_NAME, env.BUILD_NUMBER)
                             def imageName = "aksharpatel47/${config.dockerImageName ? config.dockerImageName : currentBuild.projectName}:${imageTag}"
                             echo "Building image ${imageName}..."
                             def build = docker.build(imageName)
@@ -67,13 +66,11 @@ ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
     }
 }
 
-def getImageTag(branchName, buildNumber, tagName) {
-    if (tagName != null) {
-        return "prod-${tagName}"
-    } else if (branchName.equals('develop')) {
+def getImageTag(branchName, buildNumber) {
+    if (branchName.equals('develop')) {
         return "dev-${buildNumber}"
     } else if (branchName.startsWith('release') || branchName.startsWith('hotfix')) {
         def version = branchName.split("/")[1]
-        return "qa-${version}-${buildNumber}"
+        return "release-${version}-${buildNumber}"
     }
 }
