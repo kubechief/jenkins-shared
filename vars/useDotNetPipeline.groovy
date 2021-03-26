@@ -68,7 +68,7 @@ ENTRYPOINT ["dotnet", "${config.projectName}.dll"]"""
 }
 
 def getImageTag(branchName, buildNumber, tagName) {
-    if (branchName.equals('master')) {
+    if (tagName != null) {
         return "prod-${tagName}"
     } else if (branchName.equals('develop')) {
         return "dev-${buildNumber}"
