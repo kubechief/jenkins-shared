@@ -72,7 +72,7 @@ def getImageTag(branchName, buildNumber) {
         return "prod-${version}"
     } else if (branchName.equals('develop')) {
         return "dev-${buildNumber}"
-    } else if (branchName.startsWith('Release') || branchName.startsWith('HotFix')) {
+    } else if (branchName.startsWith('release') || branchName.startsWith('hotfix')) {
         def version = branchName.split("/")[1]
         return "qa-${version}-${buildNumber}"
     }
